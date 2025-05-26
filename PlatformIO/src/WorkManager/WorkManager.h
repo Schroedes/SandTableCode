@@ -77,6 +77,7 @@ public:
     void getRobotConfig(String& respStr);
     bool setRobotConfig(const uint8_t* pData, int len);
     bool setLedStripConfig(const uint8_t* pData, int len);
+    bool updateLedValue();
 
     // Apply configuration
     void reconfigure();

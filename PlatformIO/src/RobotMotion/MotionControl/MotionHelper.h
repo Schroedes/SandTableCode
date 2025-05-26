@@ -166,5 +166,7 @@ private:
     }
     void setCurPosActualPosition();
     bool addToPlanner(RobotCommandArgs &args);
+    bool lastActiveTimeInNSeconds(int32_t nSeconds);
+    void timeoutPause(bool pauseIt);
     void blocksToAddProcess();
 };

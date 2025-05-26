@@ -14,6 +14,7 @@ public:
     void setup(ConfigBase* pConfig, const char* ledStripName);
     void service();
     void updateLedFromConfig(const char* pLedJson);
+    void updateLedValue();
     const char* getConfigStrPtr();
     void setSleepMode(int sleep);
 
@@ -33,6 +34,7 @@ private:
 
     bool _ledOn;
     byte _ledValue = -1;
+    int _realLedValue = 1;
     bool _autoDim = false;
     bool ledConfigChanged = false;
     
@@ -48,4 +50,7 @@ private:
     static const int LED_STRIP_PWM_FREQ = 7000;
     static const int LED_STRIP_LEDC_CHANNEL = 0;
     static const int LED_STRIP_LEDC_RESOLUTION = 8;
+    void SetupTotallyRandomPalette();
+    void SetupBlackAndWhiteStripedPalette();
+    void SetupPurpleAndGreenPalette();
 };

@@ -142,6 +142,7 @@ void MotionHelper::pause(bool pauseIt)
     _rampGenerator.pause(pauseIt);
     _trinamicsController.pause(pauseIt);
     _isPaused = pauseIt;
+    _motorEnabler.enableMotors(!pauseIt, false);
 }
 
 // Check if paused
@@ -363,7 +364,9 @@ void MotionHelper::blocksToAddProcess()
         addToPlanner(_blocksToAddCommandArgs);
 
         // Enable motors
-        _motorEnabler.enableMotors(true, false);
+        if (!_isPaused) {
+            _motorEnabler.enableMotors(true, false);
+        }
     }
 }
 
@@ -448,12 +451,29 @@ void MotionHelper::service()
 
     // Service homing
     _motionHoming.service(_axesParams);
+    _motorEnabler.service();
 
     // Ensure motors enabled when homing or moving
-    if ((_motionPipeline.count() > 0) || _motionHoming.isHomingInProgress())
+    if (!_isPaused && ((_motionPipeline.count() > 0) || _motionHoming.isHomingInProgress()))
     {
         _motorEnabler.enableMotors(true, false);
-    }
+    } 
+    // else if((_motionPipeline.count() == 0 || !_motionHoming.isHomingInProgress()) && !lastActiveTimeInNSeconds(5)) {
+    //     timeoutPause(true);
+    // }
+}
+
+void MotionHelper::timeoutPause(bool pauseIt)
+{
+    _rampGenerator.pause(pauseIt);
+    _trinamicsController.pause(pauseIt);
+    _motorEnabler.enableMotors(!pauseIt, false);
+}
+
+bool MotionHelper::lastActiveTimeInNSeconds(int32_t nSeconds){
+    time_t timeNow;
+    time(&timeNow);
+    return (timeNow < getLastActiveUnixTime() + nSeconds);
 }
 
 // Set home coordinates

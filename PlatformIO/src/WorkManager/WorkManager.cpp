@@ -105,6 +105,12 @@ bool WorkManager::setLedStripConfig(const uint8_t* pData, int len) {
     return true;
 }
 
+bool WorkManager::updateLedValue() {
+    _ledStrip.updateLedValue();
+    
+    return true;
+}
+
 bool WorkManager::setRobotConfig(const uint8_t *pData, int len)
 {
     Log.trace("%ssetRobotConfig len %d\n", MODULE_PREFIX, len);

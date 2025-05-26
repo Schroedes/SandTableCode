@@ -51,7 +51,7 @@ public:
             {
                 if (!_motorsAreEnabled)
                     Log.notice("MotorEnabler: enabled, disable after idle %Fs\n", _stepDisableSecs);
-                digitalWrite(_stepEnablePin, _stepEnLev);
+                digitalWrite(_stepEnablePin, !_stepEnLev);
             }
             _motorsAreEnabled = true;
             _motorEnLastMillis = millis();
@@ -62,8 +62,10 @@ public:
             if (_stepEnablePin != -1)
             {
                 if (_motorsAreEnabled)
-                    Log.notice("MotorEnabler: %smotors disabled by %s\n", timeout ? "timeout" : "command");
-                digitalWrite(_stepEnablePin, !_stepEnLev);
+                    Log.notice("MotorEnabler: motors disabled by %s\n", timeout ? "timeout" : "command");
+                if(_stepEnLev) {
+                    digitalWrite(_stepEnablePin, _stepEnLev);
+                }
             }
             _motorsAreEnabled = false;
         }

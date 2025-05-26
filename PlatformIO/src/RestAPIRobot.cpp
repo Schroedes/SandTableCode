@@ -41,7 +41,7 @@ void RestAPIRobot::apiSetLed(String &reqStr, String &respStr)
 {
     Log.notice("%sSetLed %s\n", MODULE_PREFIX, reqStr.c_str());
     // Result
-    Utils::setJsonBoolResult(respStr, true);      
+    _workManager.updateLedValue();     
 }
 
 void RestAPIRobot::apiPostSettingsBody(String& reqStr, uint8_t *pData, size_t len, size_t index, size_t total)
